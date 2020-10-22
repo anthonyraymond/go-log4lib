@@ -45,11 +45,11 @@ func doSomething() {
 Library users should only install wrapper and **must not install** `github.com/anthonyraymond/go-log4lib`
 
 ```shell script
-go get github.com/anthonyraymond/log4libwrapper-zap
+go get github.com/anthonyraymond/go-log4libwrapper-zap
 or
-go get github.com/anthonyraymond/log4libwrapper-logrus
+go get github.com/anthonyraymond/go-log4libwrapper-logrus
 or
-go get github.com/anthonyraymond/log4libwrapper-golog
+go get github.com/anthonyraymond/go-log4libwrapper-golog
 ```
 
 
@@ -58,7 +58,7 @@ Zap:
 package myapp
 
 import (
-    "github.com/anthonyraymond/log4libwrapper-zap"
+    "github.com/anthonyraymond/go-log4libwrapper-zap"
     "go.uber.org/zap"
     "thelibrary"
 )
