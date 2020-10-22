@@ -23,8 +23,8 @@ import (
 // Default logger logs to console by default, but user can replace the logger using the SetLibraryLogger()
 var logger = log4libwrapper.Default()
 
-func SetLibraryLogger(logger log4lib.LibLogger) {
-	logger = logger
+func SetLibraryLogger(l log4lib.LibLogger) {
+	logger = l
 }
 
 func GetLibLogger() log4lib.LibLogger {
