@@ -6,6 +6,10 @@ It provides a set of wrapper for the most commonly used log library.
 
 # How to use
 ### As a library developer
+Library developer should only install `github.com/anthonyraymond/go-log4lib`
+```shell script
+go get github.com/anthonyraymond/go-log4lib
+```
 
 >project/log.go
 ```go
@@ -38,6 +42,16 @@ func doSomething() {
 ```
 
 ### As a library user
+Library users should only install wrapper and **must not install** `github.com/anthonyraymond/go-log4lib`
+
+```shell script
+go get github.com/anthonyraymond/log4libwrapper-zap
+or
+go get github.com/anthonyraymond/log4libwrapper-logrus
+or
+go get github.com/anthonyraymond/log4libwrapper-golog
+```
+
 
 Zap:
 ```go
