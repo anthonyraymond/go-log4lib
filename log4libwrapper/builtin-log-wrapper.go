@@ -3,7 +3,7 @@ package log4libwrapper
 import (
 	"fmt"
 	"log"
-	"log4lib"
+	"github.com/anthonyraymond/go-log4lib"
 	"os"
 )
 
