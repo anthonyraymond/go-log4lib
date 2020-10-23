@@ -23,6 +23,7 @@ import (
 // Default logger logs to console by default, but user can replace the logger using the SetLibraryLogger()
 var logger = log4libwrapper.Default()
 
+// Make use of github.com/anthonyraymond/go-log4lib to allow third party application to pass their logger wrapped in a github.com/anthonyraymond/go-log4libwrapper-xxx
 func SetLibraryLogger(l log4lib.LibLogger) {
 	logger = l
 }
