@@ -1,7 +1,7 @@
 # Why log4lib
-Log4lib allow library to add log to the application logger output.
+Log4lib allow libraries to send their log to the user-application logger.
 
-Most of the time library should not log, and instead return errors. But there is some time where sending a WARN and keep going is better. Log4lib is meant to do this.
+Most of the time library should not log and instead return errors. But there is some time where sending a WARN and keep going is better. Log4lib is meant to do this.
 It provides a set of wrapper for the most commonly used log library.
 
 # How to use
