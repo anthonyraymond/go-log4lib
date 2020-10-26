@@ -66,7 +66,7 @@ import (
 
 func init() {
     var logger *zap.Logger = zap.NewProduction()
-    thelibrary.SetLibraryLogger(log4libwrapper.WrapZapLogger(logger.Sugar()))
+    thelibrary.SetLibraryLogger(log4libwrapper.WrapZapLogger(logger))
 }
 
 ```
