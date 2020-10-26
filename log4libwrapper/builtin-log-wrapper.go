@@ -8,6 +8,7 @@ import (
 )
 
 type builtinLoggerWrapper struct {
+	delegateDebug  *log.Logger
 	delegateInfo  *log.Logger
 	delegateWarn  *log.Logger
 	delegateError *log.Logger
@@ -15,47 +16,69 @@ type builtinLoggerWrapper struct {
 	delegateFatal *log.Logger
 }
 
+func (w *builtinLoggerWrapper) Debug(args ...interface{}) {
+	_ = w.delegateDebug.Output(2, fmt.Sprintln(args...))
+}
+
 func (w *builtinLoggerWrapper) Info(args ...interface{}) {
-	w.delegateInfo.Println(args...)
+	_ = w.delegateInfo.Output(2, fmt.Sprintln(args...))
 }
 
 func (w *builtinLoggerWrapper) Warn(args ...interface{}) {
-	w.delegateWarn.Println(args...)
+	_ = w.delegateWarn.Output(2, fmt.Sprintln(args...))
 }
 
 func (w *builtinLoggerWrapper) Error(args ...interface{}) {
-	w.delegateError.Println(args...)
+	_ = w.delegateError.Output(2, fmt.Sprintln(args...))
 }
 
 func (w *builtinLoggerWrapper) Panic(args ...interface{}) {
-	w.delegatePanic.Panic(args...)
+	s := fmt.Sprint(args...)
+	_ = w.delegatePanic.Output(2, s)
+	panic(s)
 }
 
 func (w *builtinLoggerWrapper) Fatal(args ...interface{}) {
-	w.delegateFatal.Fatal(args...)
+	_ = w.delegateFatal.Output(2, fmt.Sprint(args...))
+	os.Exit(1)
+}
+
+func (w *builtinLoggerWrapper) Debugf(template string, args ...interface{}) {
+	s := fmt.Sprintf(template, args...)
+	_ = w.delegateDebug.Output(2, fmt.Sprintln(s))
 }
 
 func (w *builtinLoggerWrapper) Infof(template string, args ...interface{}) {
-	w.delegateInfo.Println(fmt.Sprintf(template, args...))
+	s := fmt.Sprintf(template, args...)
+	_ = w.delegateInfo.Output(2, fmt.Sprintln(s))
 }
 
 func (w *builtinLoggerWrapper) Warnf(template string, args ...interface{}) {
-	w.delegateWarn.Println(fmt.Sprintf(template, args...))
+	s := fmt.Sprintf(template, args...)
+	_ = w.delegateWarn.Output(2, fmt.Sprintln(s))
 }
 
 func (w *builtinLoggerWrapper) Errorf(template string, args ...interface{}) {
-	w.delegateError.Println(fmt.Sprintf(template, args...))
+	s := fmt.Sprintf(template, args...)
+	_ = w.delegateError.Output(2, fmt.Sprintln(s))
 }
 
 func (w *builtinLoggerWrapper) Panicf(template string, args ...interface{}) {
-	w.delegatePanic.Println(fmt.Sprintf(template, args...))
+	s := fmt.Sprintf(template, args...)
+	_ = w.delegatePanic.Output(2, fmt.Sprintln(s))
+	panic(s)
 }
 
 func (w *builtinLoggerWrapper) Fatalf(template string, args ...interface{}) {
-	w.delegateFatal.Println(fmt.Sprintf(template, args...))
+	s := fmt.Sprintf(template, args...)
+	_ = w.delegateFatal.Output(2, fmt.Sprintln(s))
+	os.Exit(1)
 }
 
-func NewBuiltInLoggerWrapper(infoLogger *log.Logger, warnLogger *log.Logger, errorLogger *log.Logger, panicLogger *log.Logger, fatalLogger *log.Logger) log4lib.LibLogger {
+func WrapBuiltinLogger(debugLogger *log.Logger, infoLogger *log.Logger, warnLogger *log.Logger, errorLogger *log.Logger, panicLogger *log.Logger, fatalLogger *log.Logger) log4lib.LibLogger {
+	if debugLogger == nil {
+		panic(fmt.Errorf("cannot create a BuiltInLoggerWrapper with a nil debugLogger"))
+	}
 	if infoLogger == nil {
 		panic(fmt.Errorf("cannot create a BuiltInLoggerWrapper with a nil infoLogger"))
 	}
@@ -72,6 +95,7 @@ func NewBuiltInLoggerWrapper(infoLogger *log.Logger, warnLogger *log.Logger, err
 		panic(fmt.Errorf("cannot create a BuiltInLoggerWrapper with a nil fatalLogger"))
 	}
 	return &builtinLoggerWrapper{
+		delegateDebug:  debugLogger,
 		delegateInfo:  infoLogger,
 		delegateWarn:  warnLogger,
 		delegateError: errorLogger,
@@ -81,11 +105,12 @@ func NewBuiltInLoggerWrapper(infoLogger *log.Logger, warnLogger *log.Logger, err
 }
 
 func Default() log4lib.LibLogger {
-	return NewBuiltInLoggerWrapper(
-		log.New(os.Stdout, "INFO:", log.Ldate|log.Ltime|log.Lshortfile),
-		log.New(os.Stdout, "WARN:", log.Ldate|log.Ltime|log.Lshortfile),
-		log.New(os.Stdout, "ERROR:", log.Ldate|log.Ltime|log.Lshortfile),
-		log.New(os.Stdout, "PANIC:", log.Ldate|log.Ltime|log.Lshortfile),
-		log.New(os.Stdout, "FATAL:", log.Ldate|log.Ltime|log.Lshortfile),
+	return WrapBuiltinLogger(
+		log.New(os.Stdout, "DEBUG\t", log.Ldate|log.Ltime|log.Lshortfile),
+		log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime|log.Lshortfile),
+		log.New(os.Stdout, "WARN\t", log.Ldate|log.Ltime|log.Lshortfile),
+		log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
+		log.New(os.Stdout, "PANIC\t", log.Ldate|log.Ltime|log.Lshortfile),
+		log.New(os.Stdout, "FATAL\t", log.Ldate|log.Ltime|log.Lshortfile),
 	)
 }
