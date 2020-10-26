@@ -72,7 +72,35 @@ func init() {
 ```
 
 logrus:
-TODO
+```go
+package myapp
+
+import (
+    "github.com/anthonyraymond/go-log4libwrapper-logrus"
+    "github.com/sirupsen/logrus"
+    "thelibrary"
+)
+
+func init() {
+    var logger *logrus.Logger = logrus.New()
+    thelibrary.SetLibraryLogger(log4libwrapper.WrapLogrusLogger(logger))
+}
+
+```
 
 golog:
-TODO
+```go
+package myapp
+
+import (
+    "github.com/anthonyraymond/go-log4libwrapper-logrus"
+    "github.com/kataras/golog"
+    "thelibrary"
+)
+
+func init() {
+    var logger *golog.Logger = golog.New()
+    thelibrary.SetLibraryLogger(log4libwrapper.WrapGologLogger(logger))
+}
+
+```
